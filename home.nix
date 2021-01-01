@@ -23,6 +23,7 @@
         silver-searcher
         dos2unix
         python39
+        valgrind
     ];
 
     programs = {

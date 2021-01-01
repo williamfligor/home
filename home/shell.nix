@@ -67,6 +67,8 @@ in
         initExtra = ''
             export KEYTIMEOUT=1
             bindkey -M vicmd '^[' undefined-key
+
+            source $HOME/.nix-profile/etc/profile.d/nix.sh
         '';
 
         plugins = [
@@ -126,6 +128,8 @@ in
             export PS2="\[$Cyan\]Secondary->\[$Colour_Off\] "
             export PS3="\[$Cyan\]Select option->\[$Colour_Off\] "
             export PS4="\[$Cyan\]+xtrace $LINENO->\[$Colour_Off\] "
+
+            source $HOME/.nix-profile/etc/profile.d/nix.sh
         '';
     };
 }

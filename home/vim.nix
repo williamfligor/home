@@ -79,9 +79,11 @@ let
     };
 in
 {
-
     programs.neovim = {
         enable = true;
+        viAlias = true;
+        vimAlias = true;
+        vimdiffAlias = true;
         withNodeJs = true;
         withRuby = true;
         withPython = true;
@@ -99,7 +101,6 @@ in
             vim-ag
             vim-commentary
             vim-leader-guide
-            vim-spacemacs
             fzfWrapper
             fzf-vim
             vim-rainbow-parentheses
@@ -117,12 +118,15 @@ in
         ];
 
         extraConfig = ''
+            ${readSettingsFile "spacemacs.vim"}
             ${readSettingsFile "autocomplete.vim"}
             ${readSettingsFile "indent-tcl.vim"}
             ${readSettingsFile "keys.vim"}
             ${readSettingsFile "opts.vim"}
             ${readSettingsFile "theme.vim"}
             ${readSettingsFile "utils.vim"}
+
+            call SpacemacsInit()
         '';
 
     };
@@ -132,12 +136,15 @@ in
 
         plugins = config.programs.neovim.plugins;
         extraConfig = ''
+            ${readSettingsFile "spacemacs.vim"}
             ${readSettingsFile "autocomplete.vim"}
             ${readSettingsFile "indent-tcl.vim"}
             ${readSettingsFile "keys.vim"}
             ${readSettingsFile "opts.vim"}
             ${readSettingsFile "theme.vim"}
             ${readSettingsFile "utils.vim"}
+
+            call SpacemacsInit()
         '';
     };
 
