@@ -54,6 +54,7 @@ in
                 alias l="ls -laFbh";
             else
                 alias l="ls -laFbh --color=auto"
+                alias kitty="nixGLIntel kitty"
             fi
         '';
 

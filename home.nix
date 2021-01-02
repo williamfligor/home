@@ -4,6 +4,13 @@ let
     username = builtins.getEnv "USER";
     home_directory = builtins.getEnv "HOME";
 
+    nixGL = (import (pkgs.fetchFromGitHub {
+                owner = "guibou";
+                repo = "nixGL";
+                rev = "fad15ba09de65fc58052df84b9f68fbc088e5e7c";
+                sha256 = "1wc5gfj5ymgm4gxx5pz4lkqp5vxqdk2njlbnrc1kmailgzj6f75h";
+                })
+            { }).nixGLIntel;
 in {
     imports = [
         ./home/shell.nix 
@@ -19,7 +26,7 @@ in {
 
     home.stateVersion = "21.03";
 
-    home.packages = with pkgs; [
+    home.packages = (with pkgs; [
         htop
         ctop
         tmux
@@ -27,8 +34,11 @@ in {
         silver-searcher
         dos2unix
         python39
-        valgrind
-    ];
+    ] ++ (if stdenv.isDarwin then [
+        ] else [
+            nixGL
+        ])
+    );
 
     programs = {
         home-manager.enable = true;
@@ -44,6 +54,10 @@ in {
             enable = true;
             enableBashIntegration = true;
             enableZshIntegration = true;
+        };
+
+        kitty = {
+            enable = true;
         };
     };
 }
