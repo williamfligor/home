@@ -1,6 +1,10 @@
 { config, pkgs, lib, ... }:
 
-{
+let
+    username = builtins.getEnv "USER";
+    home_directory = builtins.getEnv "HOME";
+
+in {
     imports = [
         ./home/shell.nix 
         ./home/vim.nix 
@@ -10,8 +14,8 @@
 
     nixpkgs.config.allowUnfree = true;
 
-    home.username = "will";
-    home.homeDirectory = "/Users/will";
+    home.username = "${username}";
+    home.homeDirectory = "${home_directory}";
 
     home.stateVersion = "21.03";
 

@@ -3,8 +3,28 @@
 let
     plugins = pkgs.vimPlugins;
     python3 = pkgs.python39;
+    cmake = pkgs.cmake;
     readSettingsFile = file: builtins.readFile (./vim/. + "/${file}");
     buildVimPlugin = pkgs.vimUtils.buildVimPluginFrom2Nix;
+
+    python3Packages = pkgs.python3Packages.override {
+        overrides = self: super: {
+            doq = pkgs.python3Packages.buildPythonPackage rec {
+                pname = "doq";
+                version = "0.6.4";
+                name = "${pname}-${version}";
+                src = python3Packages.fetchPypi {
+                    inherit pname version;
+                    sha256 = "00307mranwha3524gymlg33nswxyhv274l33lwlkxvys0c8cgy6v";
+                };
+                doCheck = false;
+                propagatedBuildInputs = [
+                    pkgs.python3Packages.parso
+                    pkgs.python3Packages.jinja2
+                ];
+            };
+        };
+    };
 
     vim-ag = buildVimPlugin {
         name = "ag.vim";
@@ -14,7 +34,7 @@ let
             rev = "4a0dd6e190f446e5a016b44fdaa2feafc582918e";
             sha256 = "1dz7rmqv3xw31090qms05hwbdfdn0qd1q68mazyb715cg25r85r2";
         };
-        dependencies = [];
+        dependencies = [ python3Packages.doq ];
     };
 
     vim-spacemacs = buildVimPlugin {
@@ -49,9 +69,8 @@ let
             rev = "e3d411821cfb5fa06b8cc18d6a3f0cccfde2bf7d";
             sha256 = "1ngri5gsknl5i02cwla15l6wgkzhpjsgv9j5h120spkylw8hws5b";
         };
-        buildInputs = [ python3 ];
         buildPhase = ''
-            make install
+            ln -sfn ${python3Packages.doq}/bin/doq ./lib/doq
         '';
         dependencies = [];
     };
@@ -62,9 +81,12 @@ let
             owner = "vhdirk";
             repo = "vim-cmake";
             rev = "44f4253960814f82870d890de361047b5f03974c";
-            sha256 = "0izbjq6qbia013vmd84rdwjmwagln948jh9labhly0asnhqyrkb8";
+            sha256 = "10f0xfwib70i2glzwix38f47n1nwqykb6cr7c1swr4c1m7jxn0f5";
         };
         dependencies = [];
+        postPatch = ''
+            sed -i 's;executable("cmake");executable("${cmake}/bin/cmake");' plugin/cmake.vim
+        '';
     };
 
     vim-bitbake = buildVimPlugin {
