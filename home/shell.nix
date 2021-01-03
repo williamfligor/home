@@ -76,6 +76,8 @@ in
             else
                 echo "WARNING: Could not find nix.sh to activate"
             fi
+
+            export NIX_PATH=$HOME/.nix-defexpr/channels''${NIX_PATH:+:}$NIX_PATH
         '';
 
         plugins = [
@@ -143,6 +145,8 @@ in
             else
                 echo "WARNING: Could not find nix.sh to activate"
             fi
+
+            export NIX_PATH=$HOME/.nix-defexpr/channels''${NIX_PATH:+:}$NIX_PATH
         '';
     };
 }
