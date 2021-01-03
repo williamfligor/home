@@ -17,6 +17,7 @@ in {
         ./home/vim.nix 
         ./home/tmux.nix
         ./home/vscode.nix
+        ./home/kitty.nix
     ];
 
     nixpkgs.config.allowUnfree = true;
@@ -34,6 +35,7 @@ in {
         silver-searcher
         dos2unix
         python39
+        jq
     ] ++ (if stdenv.isDarwin then [
         ] else [
             nixGL
@@ -54,10 +56,6 @@ in {
             enable = true;
             enableBashIntegration = true;
             enableZshIntegration = true;
-        };
-
-        kitty = {
-            enable = true;
         };
     };
 }
