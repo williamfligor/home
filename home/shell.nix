@@ -25,6 +25,8 @@ let
     speedtest = "wget -O /dev/null http://cachefly.cachefly.net/100mb.test";
   };
 
+  home_directory = builtins.getEnv "HOME";
+
   envExtra = ''
     export EDITOR="vim"
     export VISUAL="vim"
@@ -61,7 +63,6 @@ in
     envExtra = envExtra;
 
     initExtraBeforeCompInit = ''
-      unsetopt SHARE_HISTORY
       setopt PROMPT_SUBST
     '';
 
@@ -78,6 +79,9 @@ in
       fi
 
       export NIX_PATH=$HOME/.nix-defexpr/channels''${NIX_PATH:+:}$NIX_PATH
+
+      # Stop sharing history between terminals.. it's annoying
+      unsetopt SHARE_HISTORY
     '';
 
     plugins = [
@@ -107,7 +111,7 @@ in
           owner = "sinetoami";
           repo = "vi-mode";
           rev = "master";
-          sha256 = "1x67p13k0zm9c6m1sl7g5mjfizwz5vfffh2cxszac6ikfcfk7yvd";
+          sha256 = "0ihq28vym8zfd542hw37nk36ibrbps2y6a1xibabqi6z2nvxyylq";
         };
         file = "vi-mode.plugin.zsh";
       }

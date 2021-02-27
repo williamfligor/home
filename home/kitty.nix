@@ -15,6 +15,13 @@
       map alt+8 goto_tab 8
       map alt+9 goto_tab 9
 
+      map ctrl+shift+equal change_font_size all +1.0
+      map ctrl+shift+minus change_font_size all -1.0
+      map ctrl+shift+backspace change_font_size all 0
+
+      font_family      SauceCodePro Nerd Font Mono
+      font_size 13.0
+
       # Base16 Tomorrow Night - kitty color config
       # Scheme by Chris Kempson (http://chriskempson.com)
       background #1d1f21

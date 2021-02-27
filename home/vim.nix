@@ -83,10 +83,22 @@ let
       owner = "kergoth";
       repo = "vim-bitbake";
       rev = "6d4148c3d200265293040a18c2f772340566554b";
-      sha256 = "0izbjq6qbia013vmd84rdwjmwagln948jh9labhly0asnhqyrkb8";
+      sha256 = "108m3ajjjwmldw0grcrp8wyavqyk72jqbf653gd5gh18g394q4iq";
     };
     dependencies = [ ];
   };
+
+  vim-leader-guide-spinks = buildVimPlugin {
+    name = "vim-leader-guide-spinks";
+    src = pkgs.fetchFromGitHub {
+      owner = "spinks";
+      repo = "vim-leader-guide";
+      rev = "1ec6a2e6f52fc864bfa0687f982d1e6379392ee9";
+      sha256 = "1bk27x3nl6whs8rdbdwvlr164ba1n5k1lkwh3n4m9g2b0a58lnv7";
+    };
+    dependencies = [ ];
+  };
+
 in
 {
   programs.neovim = {
@@ -110,7 +122,7 @@ in
       undotree
       vim-ag
       vim-commentary
-      vim-leader-guide
+      vim-leader-guide-spinks
       fzfWrapper
       fzf-vim
       {
@@ -131,6 +143,10 @@ in
 
       # Languages
       vim-pydocstring
+      typescript-vim
+      vim-jsx-typescript
+      vim-javascript
+      DoxygenToolkit-vim
       vim-nix
       vim-cmake
       vim-bitbake
@@ -202,6 +218,9 @@ in
       set number
       set undofile
       set relativenumber
+
+      " Fix indentation of C switches
+      set cinoptions+=l1
 
       " Theming
       syntax on
