@@ -100,7 +100,7 @@ in
         src = pkgs.fetchFromGitHub {
           owner = "robbyrussell";
           repo = "oh-my-zsh";
-          rev = "master";
+          rev = "9a9f3831925432fdf4352c24a002506a06d329c1";
           sha256 = "00m8d992jhbkd8mhm6zhirk9ga3dfzhh8idn2yp40yk7wdbzrd74";
         };
         file = "lib/history.zsh";
@@ -110,7 +110,7 @@ in
         src = pkgs.fetchFromGitHub {
           owner = "sinetoami";
           repo = "vi-mode";
-          rev = "master";
+          rev = "ca038bbddcb19ab189046e613a303d44e0d265a4";
           sha256 = "0ihq28vym8zfd542hw37nk36ibrbps2y6a1xibabqi6z2nvxyylq";
         };
         file = "vi-mode.plugin.zsh";
