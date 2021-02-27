@@ -123,7 +123,7 @@ in
           rev = "0.7.1";
           sha256 = "03r6hpb5fy4yaakqm3lbf4xcvd408r44jgpv4lnzl9asp4sb9qc0";
         };
-        file = "vi-mode.plugin.zsh";
+        file = "zsh-syntax-highlighting.plugin.zsh";
       }
     ];
   };
