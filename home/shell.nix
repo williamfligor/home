@@ -48,12 +48,27 @@ in
     shellAliases = shellAliases;
 
     initExtraFirst = ''
+      if test -f "$HOME/.nix-profile/etc/profile.d/nix.sh"; then
+          source $HOME/.nix-profile/etc/profile.d/nix.sh
+      elif test -f "/etc/profile.d/nix.sh"; then
+          source /etc/profile.d/nix.sh
+      elif test -f "/nix/var/nix/profiles/default/etc/profile.d/nix.sh"; then
+          source /nix/var/nix/profiles/default/etc/profile.d/nix.sh
+      elif test -f "/nix/var/nix/profiles/per-user/$USER/profile/etc/profile.d/nix.sh"; then
+          source /nix/var/nix/profiles/per-user/$USER/profile/etc/profile.d/nix.sh
+      else
+          echo "WARNING: Could not find nix.sh to activate"
+      fi
+
       if [[ -r "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-\$\{(%):-%n}.zsh" ]]; then
           source "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-\$\{(%):-%n\}.zsh"
       fi
 
       if [[ `uname` == 'Darwin' ]]; then
           alias l="ls -laFbh";
+          alias kssh="kitty +kitten ssh"
+
+          export TERMINFO_DIRS="${pkgs.kitty.terminfo.outPath}/share/terminfo"
       else
           alias l="ls -laFbh --color=auto"
           alias kitty="nixGLIntel kitty"
@@ -70,21 +85,23 @@ in
       export KEYTIMEOUT=1
       bindkey -M vicmd '^[' undefined-key
 
-      if test -f "$HOME/.nix-profile/etc/profile.d/nix.sh"; then
-          source $HOME/.nix-profile/etc/profile.d/nix.sh
-      elif test -f "/etc/profile.d/nix.sh"; then
-          source /etc/profile.d/nix.sh
-      else
-          echo "WARNING: Could not find nix.sh to activate"
-      fi
-
       export NIX_PATH=$HOME/.nix-defexpr/channels''${NIX_PATH:+:}$NIX_PATH
 
       # Stop sharing history between terminals.. it's annoying
-      unsetopt SHARE_HISTORY
+      # unsetopt SHARE_HISTORY
     '';
 
     plugins = [
+      {
+        name = "zsh-syntax-highlighting";
+        src = pkgs.fetchFromGitHub {
+          owner = "zsh-users";
+          repo = "zsh-syntax-highlighting";
+          rev = "0.7.1";
+          sha256 = "03r6hpb5fy4yaakqm3lbf4xcvd408r44jgpv4lnzl9asp4sb9qc0";
+        };
+        file = "zsh-syntax-highlighting.zsh";
+      }
       {
         name = "powerlevel10k";
         src = pkgs.zsh-powerlevel10k;
@@ -100,7 +117,7 @@ in
         src = pkgs.fetchFromGitHub {
           owner = "robbyrussell";
           repo = "oh-my-zsh";
-          rev = "9a9f3831925432fdf4352c24a002506a06d329c1";
+          rev = "master";
           sha256 = "00m8d992jhbkd8mhm6zhirk9ga3dfzhh8idn2yp40yk7wdbzrd74";
         };
         file = "lib/history.zsh";
@@ -110,20 +127,10 @@ in
         src = pkgs.fetchFromGitHub {
           owner = "sinetoami";
           repo = "vi-mode";
-          rev = "ca038bbddcb19ab189046e613a303d44e0d265a4";
+          rev = "master";
           sha256 = "0ihq28vym8zfd542hw37nk36ibrbps2y6a1xibabqi6z2nvxyylq";
         };
         file = "vi-mode.plugin.zsh";
-      }
-      {
-        name = "zsh-syntax-highlighting";
-        src = pkgs.fetchFromGitHub {
-          owner = "zsh-users";
-          repo = "zsh-syntax-highlighting";
-          rev = "0.7.1";
-          sha256 = "03r6hpb5fy4yaakqm3lbf4xcvd408r44jgpv4lnzl9asp4sb9qc0";
-        };
-        file = "zsh-syntax-highlighting.plugin.zsh";
       }
     ];
   };
@@ -146,6 +153,10 @@ in
           source $HOME/.nix-profile/etc/profile.d/nix.sh
       elif test -f "/etc/profile.d/nix.sh"; then
           source /etc/profile.d/nix.sh
+      elif test -f "/nix/var/nix/profiles/default/etc/profile.d/nix.sh"; then
+          source /nix/var/nix/profiles/default/etc/profile.d/nix.sh
+      elif test -f "/nix/var/nix/profiles/per-user/$USER/profile/etc/profile.d/nix.sh"; then
+          source /nix/var/nix/profiles/per-user/$USER/profile/etc/profile.d/nix.sh
       else
           echo "WARNING: Could not find nix.sh to activate"
       fi

@@ -2,7 +2,7 @@
 
 let
   # Additional plugins
-  themepack = pkgs.tmuxPlugins.mkDerivation {
+  themepack = pkgs.tmuxPlugins.mkTmuxPlugin {
     pluginName = "themepack";
     name = "themepack";
     src = builtins.fetchGit {
