@@ -41,12 +41,13 @@ let
   scriptsFile = file: pkgs.writeScriptBin "${file}" (lib.fileContents (./scripts/. + "/${file}"));
   pythonScriptsFile = file: writePython3Script "${file}" (lib.fileContents (./scripts/. + "/${file}"));
 
-  locals = scriptsFile "locals";
-  sshreset = scriptsFile "sshreset";
-  vimreset = scriptsFile "vimreset";
+  cleanOSXNetwork = scriptsFile "clean_osx_network";
+  sshresetScript = scriptsFile "sshreset";
   tldr = scriptsFile "tldr";
+  groupclone = pythonScriptsFile "groupclone";
   venvw = scriptsFile "venvw";
   linkapps = scriptsFile "link-apps";
+
 
 in
 {
@@ -71,6 +72,7 @@ in
 
   home.packages = (with pkgs; [
     htop
+    rename
     ctop
     tmux
     fzf
@@ -79,37 +81,42 @@ in
     jq
     postgresql
     openssl
-    lab
+    gitAndTools.lab
     ranger
     graphviz
     sshuttle
     wget
+    clang-tools
+    nodejs
+    protobuf
+    mtr
     python27
     (python39.withPackages (ps: with ps; [
       # Virtualenv
       pip
       virtualenv
       virtualenvwrapper
+      black
+      isort
 
       # Basics
       python-gitlab
+      pyyaml
       gitpython
     ]))
-    nodejs
 
     nixpkgs-fmt
 
     # Scripts
-    locals
-    sshreset
-    vimreset
+    cleanOSXNetwork
+    sshresetScript
     tldr
+    groupclone
     venvw
     linkapps
   ] ++ (if stdenv.isDarwin then [
     macpass
     rectangle
-    alfred
   ] else [
     nixGL
   ])

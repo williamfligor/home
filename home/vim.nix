@@ -108,7 +108,6 @@ in
     vimdiffAlias = true;
     withNodeJs = true;
     withRuby = true;
-    withPython = true;
     withPython3 = true;
 
     plugins = with plugins; [
@@ -125,13 +124,7 @@ in
       vim-leader-guide-spinks
       fzfWrapper
       fzf-vim
-      {
-        plugin = vim-rainbow-parentheses;
-        config = ''
-          " Rainbow always on
-          autocmd FileType * RainbowParentheses
-        '';
-      }
+      vim-rainbow-parentheses
       {
         plugin = plugins.editorconfig-vim;
         config = ''
@@ -286,14 +279,15 @@ in
           call mkdir(backupdir)
       endif
 
-      set undodir=~/.vim/undo//
-      set backupdir=~/.vim/backup//
-      set directory=~/.vim/swap//
+      set undodir=~/.vim/undo/
+      set backupdir=~/.vim/backup/
+      set directory=~/.vim/swap/
 
       ${readSettingsFile "spacemacs.vim"}
       ${readSettingsFile "indent-tcl.vim"}
 
       call SpacemacsInit()
+      autocmd FileType * RainbowParentheses
     '';
 
   };
