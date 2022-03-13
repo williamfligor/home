@@ -8,10 +8,6 @@ sh <(curl -L https://nixos.org/nix/install) \
     --no-channel-add \
     --nix-extra-conf-file /tmp/nix.conf
 
-# MacOS needs help with SSL
-cert_file=/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt
-sudo launchctl setenv NIX_SSL_CERT_FILE "$cert_file"
-
 # Disable spotlight indexing of /nix to speed up performance
 sudo mdutil -i off /nix
 
