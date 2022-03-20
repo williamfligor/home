@@ -67,8 +67,6 @@ in
       if [[ `uname` == 'Darwin' ]]; then
           alias l="ls -laFbh";
           alias kssh="kitty +kitten ssh"
-
-          export TERMINFO_DIRS="${pkgs.kitty.terminfo.outPath}/share/terminfo"
       else
           alias l="ls -laFbh --color=auto"
           alias kitty="nixGLIntel kitty"

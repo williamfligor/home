@@ -4,6 +4,8 @@ let
   username = builtins.getEnv "USER";
   home_directory = builtins.getEnv "HOME";
 
+  unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
+
   nixGL = (import
     (pkgs.fetchFromGitHub {
       owner = "guibou";
@@ -12,20 +14,6 @@ let
       sha256 = "1wc5gfj5ymgm4gxx5pz4lkqp5vxqdk2njlbnrc1kmailgzj6f75h";
     })
     { }).nixGLIntel;
-
-  gitpython = pkgs.python39.pkgs.buildPythonPackage rec {
-    pname = "GitPython";
-    version = "3.1.12";
-    name = "${pname}-${version}";
-    src = pkgs.python39.pkgs.fetchPypi {
-      inherit pname version;
-      sha256 = "1b0x9baawd68z7azj5nfp4jp3vyw0cqry1fhdr4nqmz2v7cfzns2";
-    };
-    doCheck = false;
-    propagatedBuildInputs = [
-      pkgs.python39.pkgs.gitdb
-    ];
-  };
 
   writePython3Script = name: text:
     pkgs.writeTextFile {
@@ -39,15 +27,12 @@ let
     };
 
   scriptsFile = file: pkgs.writeScriptBin "${file}" (lib.fileContents (./scripts/. + "/${file}"));
-  pythonScriptsFile = file: writePython3Script "${file}" (lib.fileContents (./scripts/. + "/${file}"));
 
-  cleanOSXNetwork = scriptsFile "clean_osx_network";
-  sshresetScript = scriptsFile "sshreset";
+  clean-osx-network = scriptsFile "clean-osx-network";
+  ssh-reset = scriptsFile "ssh-reset";
   tldr = scriptsFile "tldr";
-  groupclone = pythonScriptsFile "groupclone";
   venvw = scriptsFile "venvw";
-  linkapps = scriptsFile "link-apps";
-
+  link-apps = scriptsFile "link-apps";
 
 in
 {
@@ -61,6 +46,9 @@ in
 
   nixpkgs.overlays = [
     (import ./overlay/apps.nix)
+    (self: super: {
+      kitty = unstable.kitty;
+    })
   ];
 
   nixpkgs.config.allowUnfree = true;
@@ -68,28 +56,24 @@ in
   home.username = "${username}";
   home.homeDirectory = "${home_directory}";
 
-  home.stateVersion = "21.03";
+  home.stateVersion = "21.11";
 
   home.packages = (with pkgs; [
-    htop
-    rename
+    # Monitoring
     ctop
-    tmux
-    fzf
-    silver-searcher
+    htop
+
+    # Terminal Utilities
     dos2unix
+    fzf
     jq
-    postgresql
-    openssl
-    gitAndTools.lab
-    ranger
-    graphviz
-    sshuttle
-    wget
-    clang-tools
-    nodejs
-    protobuf
     mtr
+    nixpkgs-fmt
+    rename
+    silver-searcher
+    tmux
+    wget
+
     python27
     (python39.withPackages (ps: with ps; [
       # Virtualenv
@@ -98,24 +82,15 @@ in
       virtualenvwrapper
       black
       isort
-
-      # Basics
-      python-gitlab
-      pyyaml
-      gitpython
     ]))
 
-    nixpkgs-fmt
-
-    # Scripts
-    cleanOSXNetwork
-    sshresetScript
+    # Script/
+    clean-osx-network
+    ssh-reset
     tldr
-    groupclone
     venvw
-    linkapps
+    link-apps
   ] ++ (if stdenv.isDarwin then [
-    macpass
     rectangle
   ] else [
     nixGL

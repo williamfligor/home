@@ -12,6 +12,7 @@ sh <(curl -L https://nixos.org/nix/install) \
 sudo mdutil -i off /nix
 
 nix-channel --add https://nixos.org/channels/nixos-21.11 nixpkgs
+nix-channel --add https://nixos.org/channels/nixos-unstable nixos-unstable
 nix-channel --add https://github.com/nix-community/home-manager/archive/release-21.11.tar.gz home-manager
 nix-channel --update
 
@@ -29,6 +30,7 @@ sh <(curl -L https://nixos.org/nix/install) \
     --no-channel-add
 
 nix-channel --add https://nixos.org/channels/nixos-21.11 nixpkgs
+nix-channel --add https://nixos.org/channels/nixos-unstable nixos-unstable
 nix-channel --add https://github.com/nix-community/home-manager/archive/release-21.11.tar.gz home-manager
 nix-channel --update
 
